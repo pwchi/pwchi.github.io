@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="zh_tw">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>不同 Hexo render 顯示 markdown table 的比較 | pwchi's BLOG</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://pwchi.github.io/posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Po-Wen Chi">
+<link rel="prev" href="../Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/" title="Highcharts 與 Plotly 的性能比較" type="text/html">
+<meta property="og:site_name" content="pwchi's BLOG">
+<meta property="og:title" content="不同 Hexo render 顯示 markdown table 的比較">
+<meta property="og:url" content="https://pwchi.github.io/posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/">
+<meta property="og:description" content="原始 markdown 表格 code 如下
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|   12  |  12  |    12   |    12  |
+|  123  |  123 |   123   |   123  |
+|    1  |    1 |     1   |     1 ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-04-29T02:47:23+08:00">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="markdown">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">略過主內容</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">切換導航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://pwchi.github.io/">
+
+                <span id="blog-title">pwchi's BLOG</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../archive.html">Archives</a>
+                </li>
+<li>
+<a href="../../categories/index.html">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- DuckDuckGo custom search --><form method="get" id="search" action="https://duckduckgo.com/" class="navbar-form pull-left">
+<input type="hidden" name="sites" value="https://pwchi.github.io/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top: 4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="../%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/index.md" id="sourcelink">原始碼</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="../%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" class="u-url">不同 Hexo render 顯示 markdown table 的比較</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn">
+                    Po-Wen Chi
+            </span></p>
+            <p class="dateline"><a href="../%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" rel="bookmark"><time class="published dt-published" datetime="2016-04-29T02:47:23+08:00" itemprop="datePublished" title="2016-04-29 02:47">2016-04-29 02:47</time></a></p>
+                <p class="commentline">
+        
+    <a href="../%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/#disqus_thread" data-disqus-identifier="cache/posts/2016-04-29-不同-Hexo-render-顯示-markdown-table-的比較.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="../%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/index.md" id="sourcelink">原始碼</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<h3>原始 markdown 表格 code 如下</h3>
+<pre class="code literal-block"><span></span><span class="p">|</span> <span class="nv">Right</span> <span class="p">|</span> <span class="nv">Left</span> <span class="p">|</span> <span class="nv">Default</span> <span class="p">|</span> <span class="nv">Center</span> <span class="p">|</span>
+<span class="p">|</span><span class="s s-Atom">------:</span><span class="p">|:-</span><span class="s s-Atom">----</span><span class="p">|</span><span class="s s-Atom">---------</span><span class="p">|:-</span><span class="s s-Atom">-----:</span><span class="p">|</span>
+<span class="p">|</span>   <span class="mi">12</span>  <span class="p">|</span>  <span class="mi">12</span>  <span class="p">|</span>    <span class="mi">12</span>   <span class="p">|</span>    <span class="mi">12</span>  <span class="p">|</span>
+<span class="p">|</span>  <span class="mi">123</span>  <span class="p">|</span>  <span class="mi">123</span> <span class="p">|</span>   <span class="mi">123</span>   <span class="p">|</span>   <span class="mi">123</span>  <span class="p">|</span>
+<span class="p">|</span>    <span class="mi">1</span>  <span class="p">|</span>    <span class="mi">1</span> <span class="p">|</span>     <span class="mi">1</span>   <span class="p">|</span>     <span class="mi">1</span>  <span class="p">|</span>
+</pre>
+
+
+<h3>hexo-renderer-markdown-it render 出來的表格</h3>
+<p><img alt="hexo-renderer-markdown-it render 出來的表格" src="../../2016-04-29-%E4%B8%8D%E5%90%8C-Hexo-render-%E9%A1%AF%E7%A4%BA-markdown-table-%E7%9A%84%E6%AF%94%E8%BC%83/hexo_it_table.png" title="hexo-renderer-markdown-it render 出來的表格"></p>
+<h3>hexo-renderer-pandoc redner 搭配 pandoc 1.17.0.2 render 出來的表格</h3>
+<p><img alt="hexo-renderer-pandoc redner 搭配 pandoc 1.17.0.2 render 出來的表格" src="../../2016-04-29-%E4%B8%8D%E5%90%8C-Hexo-render-%E9%A1%AF%E7%A4%BA-markdown-table-%E7%9A%84%E6%AF%94%E8%BC%83/hexo_pandoc_table.png" title="hexo-renderer-pandoc redner 搭配 pandoc 1.17.0.2 render 出來的表格"></p>
+<p>結論</p>
+<ul>
+<li>
+<strong>hexo-renderer-markdown-it</strong> 較能正確顯示 markdown table 的對齊樣式。</li>
+<li>
+<strong>hexo-renderer-pandoc</strong> 雖無法正確對齊，但支援較多種表格形式。</li>
+</ul>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/hexo/" rel="tag">Hexo</a></li>
+            <li><a class="tag p-category" href="../../categories/markdown/" rel="tag">markdown</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/" rel="prev" title="Highcharts 與 Plotly 的性能比較">上一篇</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>迴響</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="pwchisblog",
+            disqus_url="https://pwchi.github.io/posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/",
+        disqus_title="\u4e0d\u540c Hexo render \u986f\u793a markdown table \u7684\u6bd4\u8f03",
+        disqus_identifier="cache/posts/2016-04-29-不同-Hexo-render-顯示-markdown-table-的比較.html",
+        disqus_config = function () {
+            this.language = "zh_tw";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="pwchisblog";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2017         <a href="mailto:pwchi@pwchi.info">Po-Wen Chi</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/colorbox-i18n/jquery.colorbox-zh-TW.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("zh-tw");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2793540-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

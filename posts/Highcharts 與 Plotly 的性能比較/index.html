@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="zh_tw">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Highcharts 與 Plotly 的性能比較 | pwchi's BLOG</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://pwchi.github.io/posts/Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Po-Wen Chi">
+<link rel="prev" href="../%E8%A7%A3%E6%B1%BA%20Windows%20%E7%92%B0%E5%A2%83%20pysnmp%20/%20pycrypto%20package%20%E5%AE%89%E8%A3%9D%E5%A4%B1%E6%95%97%E5%95%8F%E9%A1%8C/" title="解決 Windows 環境 pysnmp / pycrypto package 安裝失敗問題" type="text/html">
+<link rel="next" href="../%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" title="不同 Hexo render 顯示 markdown table 的比較" type="text/html">
+<meta property="og:site_name" content="pwchi's BLOG">
+<meta property="og:title" content="Highcharts 與 Plotly 的性能比較">
+<meta property="og:url" content="https://pwchi.github.io/posts/Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/">
+<meta property="og:description" content="Highcharts 與 Plotly 都是用來繪製網頁圖表的 JavaScript library 為了確認哪套比較適合在同一張圖表上繪製大量數組，我用 Plotly 與 Highcharts 繪製相同的大數組圖表，測試他們在顯示大量數組時的反應。
+實驗發現(數組名稱較長情況下)
+
+在少量數組時，Highcharts 的游標移動效果較 Plotly 平順。
+隨著顯示數組的增加 Highchart">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-04-23T10:37:26+08:00">
+<meta property="article:tag" content="Highcharts">
+<meta property="article:tag" content="Plotly">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">略過主內容</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">切換導航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://pwchi.github.io/">
+
+                <span id="blog-title">pwchi's BLOG</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../archive.html">Archives</a>
+                </li>
+<li>
+<a href="../../categories/index.html">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- DuckDuckGo custom search --><form method="get" id="search" action="https://duckduckgo.com/" class="navbar-form pull-left">
+<input type="hidden" name="sites" value="https://pwchi.github.io/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top: 4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="../Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/index.md" id="sourcelink">原始碼</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="../Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/" class="u-url">Highcharts 與 Plotly 的性能比較</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn">
+                    Po-Wen Chi
+            </span></p>
+            <p class="dateline"><a href="../Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/" rel="bookmark"><time class="published dt-published" datetime="2016-04-23T10:37:26+08:00" itemprop="datePublished" title="2016-04-23 10:37">2016-04-23 10:37</time></a></p>
+                <p class="commentline">
+        
+    <a href="../Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/#disqus_thread" data-disqus-identifier="cache/posts/2016-04-23-highcharts-與-plotly-的性能比較.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="../Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/index.md" id="sourcelink">原始碼</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>Highcharts 與 Plotly 都是用來繪製網頁圖表的 JavaScript library 為了確認哪套比較適合在同一張圖表上繪製大量數組，我用 Plotly 與 Highcharts 繪製相同的大數組圖表，測試他們在顯示大量數組時的反應。</p>
+<p>實驗發現(數組名稱較長情況下)</p>
+<ul>
+<li>在少量數組時，Highcharts 的游標移動效果較 Plotly 平順。</li>
+<li>隨著顯示數組的增加 Highcharts 順暢度開始遞減，而 Plotly 無明顯改變。</li>
+<li>當顯示所有數組時，Highcharts 幾乎動彈不得，Plotly 仍然可以正常操作。</li>
+</ul>
+<p>額外發現</p>
+<ul>
+<li>數組名稱的長度對 Highcharts 有顯著影響，如減少數組名稱的長度，流暢度就會大幅提昇。</li>
+<li>Plotly 無論名稱長短、數組多寡，都無太大差異。</li>
+</ul>
+<p>結論</p>
+<p><strong>如要繪製顯示大量數組的圖表，建議用 Plotly 較不會因數組名稱過長導致體驗變差。</strong></p>
+<p>實驗 DEMO (30個數組、每組200個數值)</p>
+<ul>
+<li><a href="../../2016-04-23-highcharts-%E8%88%87-plotly-%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/highcharts_test_long.html">Highcharts-大數組-長名稱</a></li>
+<li><a href="../../2016-04-23-highcharts-%E8%88%87-plotly-%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/highcharts_test_short.html">Highcharts-大數組-短名稱</a></li>
+<li><a href="../../2016-04-23-highcharts-%E8%88%87-plotly-%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/plotly_test_long.html">Plotly-大數組-長名稱</a></li>
+<li><a href="../../2016-04-23-highcharts-%E8%88%87-plotly-%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/plotly_test_short.html">Plotly-大數組-短名稱</a></li>
+</ul>
+<p>順便記錄用來產生測試數據的程式碼如下</p>
+<pre class="code literal-block"><span></span><span class="kn">import</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">random</span>
+<span class="n">a1</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">b1</span><span class="o">=</span><span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+    <span class="n">labelsName</span><span class="o">=</span><span class="s1">'samplexxxxxxxxxxxxxx'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1">#labelsName='sample'+str(x)</span>
+    <span class="n">randint</span><span class="o">=</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">)]</span>
+    <span class="c1">#for plotly</span>
+    <span class="n">a</span><span class="o">=</span><span class="p">{</span><span class="s1">'type'</span><span class="p">:</span><span class="s1">'scatter'</span><span class="p">,</span><span class="s1">'model'</span><span class="p">:</span><span class="s1">'lines'</span><span class="p">,</span><span class="s1">'name'</span><span class="p">:</span><span class="n">labelsName</span><span class="p">}</span>
+    <span class="n">a</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span><span class="o">=</span><span class="n">randint</span>
+    <span class="n">a1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="c1">#for highcharts</span>
+    <span class="n">b</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">b</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="o">=</span><span class="n">labelsName</span>
+    <span class="c1">#b['visible']= False</span>
+    <span class="n">b</span><span class="p">[</span><span class="s1">'data'</span><span class="p">]</span><span class="o">=</span><span class="n">randint</span>
+    <span class="n">b1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'plotly_test.json'</span><span class="p">,</span><span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">a1</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'highcharts_test.json'</span><span class="p">,</span><span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">b1</span><span class="p">))</span>
+</pre>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/highcharts/" rel="tag">Highcharts</a></li>
+            <li><a class="tag p-category" href="../../categories/plotly/" rel="tag">Plotly</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../%E8%A7%A3%E6%B1%BA%20Windows%20%E7%92%B0%E5%A2%83%20pysnmp%20/%20pycrypto%20package%20%E5%AE%89%E8%A3%9D%E5%A4%B1%E6%95%97%E5%95%8F%E9%A1%8C/" rel="prev" title="解決 Windows 環境 pysnmp / pycrypto package 安裝失敗問題">上一篇</a>
+            </li>
+            <li class="next">
+                <a href="../%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" rel="next" title="不同 Hexo render 顯示 markdown table 的比較">下一篇</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>迴響</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="pwchisblog",
+            disqus_url="https://pwchi.github.io/posts/Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/",
+        disqus_title="Highcharts \u8207 Plotly \u7684\u6027\u80fd\u6bd4\u8f03",
+        disqus_identifier="cache/posts/2016-04-23-highcharts-與-plotly-的性能比較.html",
+        disqus_config = function () {
+            this.language = "zh_tw";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="pwchisblog";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2017         <a href="mailto:pwchi@pwchi.info">Po-Wen Chi</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/colorbox-i18n/jquery.colorbox-zh-TW.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("zh-tw");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2793540-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

@@ -7,23 +7,43 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://pwchi.github.io/</loc>
-  <lastmod>2017-03-01T03:45:00Z</lastmod>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://pwchi.github.io/2015/</loc>
-  <lastmod>2017-03-01T03:45:00Z</lastmod>
+  <lastmod>2017-03-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://pwchi.github.io/2016/</loc>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://pwchi.github.io/archive.html</loc>
-  <lastmod>2017-03-01T03:45:00Z</lastmod>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://pwchi.github.io/categories/</loc>
-  <lastmod>2017-03-01T03:45:00Z</lastmod>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://pwchi.github.io/categories/domainname/</loc>
   <lastmod>2017-03-01T03:45:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://pwchi.github.io/categories/hexo/</loc>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://pwchi.github.io/categories/highcharts/</loc>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://pwchi.github.io/categories/markdown/</loc>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://pwchi.github.io/categories/plotly/</loc>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://pwchi.github.io/categories/python/</loc>
@@ -112,6 +132,14 @@
  <url>
   <loc>https://pwchi.github.io/pages/theming/</loc>
   <lastmod>2017-03-01T03:45:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://pwchi.github.io/posts/Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/</loc>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://pwchi.github.io/posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/</loc>
+  <lastmod>2017-03-05T07:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://pwchi.github.io/posts/%E4%BD%BF%E7%94%A8%20vSphere%20Web%20Client%20%E5%9F%B7%E8%A1%8C%20Launch%20Console%20%E6%99%82%E6%8F%90%E7%A4%BA%20%27The%20server%20name%20could%20not%20be%20resolved%27/</loc>

@@ -12,7 +12,7 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="https://pwchi.github.io/">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/%E8%A7%A3%E6%B1%BA%20Windows%20%E7%92%B0%E5%A2%83%20pysnmp%20/%20pycrypto%20package%20%E5%AE%89%E8%A3%9D%E5%A4%B1%E6%95%97%E5%95%8F%E9%A1%8C/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">略過主內容</a>
@@ -68,7 +68,109 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/%E8%A7%A3%E6%B1%BA%20Windows%20%E7%92%B0%E5%A2%83%20pysnmp%20/%20pycrypto%20package%20%E5%AE%89%E8%A3%9D%E5%A4%B1%E6%95%97%E5%95%8F%E9%A1%8C/" class="u-url">解決 Windows 環境 pysnmp / pycrypto package 安裝失敗問題</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" class="u-url">不同 Hexo render 顯示 markdown table 的比較</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn">
+                Po-Wen Chi
+            </span></p>
+            <p class="dateline"><a href="posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" rel="bookmark"><time class="published dt-published" datetime="2016-04-29T02:47:23+08:00" title="2016-04-29 02:47">2016-04-29 02:47</time></a></p>
+                <p class="commentline">
+        
+    <a href="posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/#disqus_thread" data-disqus-identifier="cache/posts/2016-04-29-不同-Hexo-render-顯示-markdown-table-的比較.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="p-summary entry-summary">
+    <div>
+<h3>原始 markdown 表格 code 如下</h3>
+<pre class="code literal-block"><span></span><span class="p">|</span> <span class="nv">Right</span> <span class="p">|</span> <span class="nv">Left</span> <span class="p">|</span> <span class="nv">Default</span> <span class="p">|</span> <span class="nv">Center</span> <span class="p">|</span>
+<span class="p">|</span><span class="s s-Atom">------:</span><span class="p">|:-</span><span class="s s-Atom">----</span><span class="p">|</span><span class="s s-Atom">---------</span><span class="p">|:-</span><span class="s s-Atom">-----:</span><span class="p">|</span>
+<span class="p">|</span>   <span class="mi">12</span>  <span class="p">|</span>  <span class="mi">12</span>  <span class="p">|</span>    <span class="mi">12</span>   <span class="p">|</span>    <span class="mi">12</span>  <span class="p">|</span>
+<span class="p">|</span>  <span class="mi">123</span>  <span class="p">|</span>  <span class="mi">123</span> <span class="p">|</span>   <span class="mi">123</span>   <span class="p">|</span>   <span class="mi">123</span>  <span class="p">|</span>
+<span class="p">|</span>    <span class="mi">1</span>  <span class="p">|</span>    <span class="mi">1</span> <span class="p">|</span>     <span class="mi">1</span>   <span class="p">|</span>     <span class="mi">1</span>  <span class="p">|</span>
+</pre>
+
+
+<h3>hexo-renderer-markdown-it render 出來的表格</h3>
+<p><img alt="hexo-renderer-markdown-it render 出來的表格" src="2016-04-29-%E4%B8%8D%E5%90%8C-Hexo-render-%E9%A1%AF%E7%A4%BA-markdown-table-%E7%9A%84%E6%AF%94%E8%BC%83/hexo_it_table.png" title="hexo-renderer-markdown-it render 出來的表格"></p>
+<h3>hexo-renderer-pandoc redner 搭配 pandoc 1.17.0.2 render 出來的表格</h3>
+<p><img alt="hexo-renderer-pandoc redner 搭配 pandoc 1.17.0.2 render 出來的表格" src="2016-04-29-%E4%B8%8D%E5%90%8C-Hexo-render-%E9%A1%AF%E7%A4%BA-markdown-table-%E7%9A%84%E6%AF%94%E8%BC%83/hexo_pandoc_table.png" title="hexo-renderer-pandoc redner 搭配 pandoc 1.17.0.2 render 出來的表格"></p>
+<p>結論</p>
+<ul>
+<li>
+<strong>hexo-renderer-markdown-it</strong> 較能正確顯示 markdown table 的對齊樣式。</li>
+<li>
+<strong>hexo-renderer-pandoc</strong> 雖無法正確對齊，但支援較多種表格形式。</li>
+</ul>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/" class="u-url">Highcharts 與 Plotly 的性能比較</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn">
+                Po-Wen Chi
+            </span></p>
+            <p class="dateline"><a href="posts/Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/" rel="bookmark"><time class="published dt-published" datetime="2016-04-23T10:37:26+08:00" title="2016-04-23 10:37">2016-04-23 10:37</time></a></p>
+                <p class="commentline">
+        
+    <a href="posts/Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/#disqus_thread" data-disqus-identifier="cache/posts/2016-04-23-highcharts-與-plotly-的性能比較.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="p-summary entry-summary">
+    <div>
+<p>Highcharts 與 Plotly 都是用來繪製網頁圖表的 JavaScript library 為了確認哪套比較適合在同一張圖表上繪製大量數組，我用 Plotly 與 Highcharts 繪製相同的大數組圖表，測試他們在顯示大量數組時的反應。</p>
+<p>實驗發現(數組名稱較長情況下)</p>
+<ul>
+<li>在少量數組時，Highcharts 的游標移動效果較 Plotly 平順。</li>
+<li>隨著顯示數組的增加 Highcharts 順暢度開始遞減，而 Plotly 無明顯改變。</li>
+<li>當顯示所有數組時，Highcharts 幾乎動彈不得，Plotly 仍然可以正常操作。</li>
+</ul>
+<p>額外發現</p>
+<ul>
+<li>數組名稱的長度對 Highcharts 有顯著影響，如減少數組名稱的長度，流暢度就會大幅提昇。</li>
+<li>Plotly 無論名稱長短、數組多寡，都無太大差異。</li>
+</ul>
+<p>結論</p>
+<p><strong>如要繪製顯示大量數組的圖表，建議用 Plotly 較不會因數組名稱過長導致體驗變差。</strong></p>
+<p>實驗 DEMO (30個數組、每組200個數值)</p>
+<ul>
+<li><a href="2016-04-23-highcharts-%E8%88%87-plotly-%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/highcharts_test_long.html">Highcharts-大數組-長名稱</a></li>
+<li><a href="2016-04-23-highcharts-%E8%88%87-plotly-%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/highcharts_test_short.html">Highcharts-大數組-短名稱</a></li>
+<li><a href="2016-04-23-highcharts-%E8%88%87-plotly-%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/plotly_test_long.html">Plotly-大數組-長名稱</a></li>
+<li><a href="2016-04-23-highcharts-%E8%88%87-plotly-%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/plotly_test_short.html">Plotly-大數組-短名稱</a></li>
+</ul>
+<p>順便記錄用來產生測試數據的程式碼如下</p>
+<pre class="code literal-block"><span></span><span class="kn">import</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">random</span>
+<span class="n">a1</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">b1</span><span class="o">=</span><span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+    <span class="n">labelsName</span><span class="o">=</span><span class="s1">'samplexxxxxxxxxxxxxx'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1">#labelsName='sample'+str(x)</span>
+    <span class="n">randint</span><span class="o">=</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">)]</span>
+    <span class="c1">#for plotly</span>
+    <span class="n">a</span><span class="o">=</span><span class="p">{</span><span class="s1">'type'</span><span class="p">:</span><span class="s1">'scatter'</span><span class="p">,</span><span class="s1">'model'</span><span class="p">:</span><span class="s1">'lines'</span><span class="p">,</span><span class="s1">'name'</span><span class="p">:</span><span class="n">labelsName</span><span class="p">}</span>
+    <span class="n">a</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span><span class="o">=</span><span class="n">randint</span>
+    <span class="n">a1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="c1">#for highcharts</span>
+    <span class="n">b</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">b</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="o">=</span><span class="n">labelsName</span>
+    <span class="c1">#b['visible']= False</span>
+    <span class="n">b</span><span class="p">[</span><span class="s1">'data'</span><span class="p">]</span><span class="o">=</span><span class="n">randint</span>
+    <span class="n">b1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'plotly_test.json'</span><span class="p">,</span><span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">a1</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'highcharts_test.json'</span><span class="p">,</span><span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">b1</span><span class="p">))</span>
+</pre>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/%E8%A7%A3%E6%B1%BA%20Windows%20%E7%92%B0%E5%A2%83%20pysnmp%20/%20pycrypto%20package%20%E5%AE%89%E8%A3%9D%E5%A4%B1%E6%95%97%E5%95%8F%E9%A1%8C/" class="u-url">解決 Windows 環境 pysnmp / pycrypto package 安裝失敗問題</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn">
                 Po-Wen Chi
