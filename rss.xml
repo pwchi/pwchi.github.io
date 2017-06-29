@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>pwchi's BLOG</title><link>https://pwchi.github.io/</link><description>This is a pwchi's BLOG.</description><atom:link rel="self" href="https://pwchi.github.io/rss.xml" type="application/rss+xml"></atom:link><language>zh_tw</language><lastBuildDate>Thu, 29 Jun 2017 08:00:16 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>.NET Runtime Optimization Service 持續佔用 CPU</title><link>https://pwchi.github.io/posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/</link><dc:creator>Po-Wen Chi</dc:creator><description>&lt;div&gt;&lt;p&gt;電腦安裝自然輸入法後，當電腦 Idle 一陣子，會發現CPU風扇轉速變高噪音變大，於工作管理員會看到 .NET Runtime Optimization Service 程序持續佔用 CPU。&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>pwchi's BLOG</title><link>https://pwchi.github.io/</link><description>This is a pwchi's BLOG.</description><atom:link type="application/rss+xml" href="https://pwchi.github.io/rss.xml" rel="self"></atom:link><language>zh_tw</language><lastBuildDate>Thu, 29 Jun 2017 08:57:25 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>.NET Runtime Optimization Service 持續佔用 CPU</title><link>https://pwchi.github.io/posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/</link><dc:creator>Po-Wen Chi</dc:creator><description>&lt;div&gt;&lt;p&gt;電腦安裝自然輸入法後，當電腦 Idle 一陣子，會發現CPU風扇轉速變高噪音變大，於工作管理員會看到 .NET Runtime Optimization Service 程序持續佔用 CPU。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="" src="https://pwchi.github.io/2017-06-29-.NET-Runtime-Optimization-Service-%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8-CPU/taskmanager.png" title="Windows工作管理員"&gt;&lt;/p&gt;
 &lt;p&gt;正常情況下 .NET RuntimeOptimization Service 會利用電腦空閒時間，將新安裝的 .NET 應用程式進行預編譯，來加快應用程式的啟動速度。通常預編譯只需執行一次，預編譯過的應用程式就不會再執行。&lt;a href="https://blogs.msdn.microsoft.com/dotnet/2013/08/06/got-a-need-for-speed-net-apps-start-faster/" title="Got a need for speed? .NET apps start faster."&gt;1&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;但問題出在，自然輸入法的預編譯過程一直無法完成，使得 .NET RuntimeOptimization Service 卡在那邊吃 CPU。&lt;/p&gt;
@@ -21,9 +21,12 @@
 &lt;p&gt;C:\Windows\Microsoft.NET\Framework\v2.0.50727&amp;gt;&lt;code&gt;ngen executeQueuedItems&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;code&gt;Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;   Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
    Copyright (c) Microsoft Corporation.  All rights reserved.
-       Compiling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll (CLR v2.0.50727) ...&lt;/code&gt;&lt;/p&gt;
+       Compiling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll (CLR v2.0.50727) ... 
+&lt;/pre&gt;
+
+
 &lt;p&gt;發現卡在&lt;code&gt;C:\ProgramFiles\IQ Technology\Going11\Go11Util.dll&lt;/code&gt;跑不完，只要把 Go11Util.dll 從編譯佇列移除，問題就解決。&lt;/p&gt;
 &lt;h2&gt;解決方法&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;把 Go11Util.dll 從預編譯佇列移除&lt;/strong&gt;&lt;/p&gt;
@@ -38,17 +41,22 @@
 &lt;p&gt;C:\Windows\Microsoft.NET\Framework\v2.0.50727&amp;gt;&lt;code&gt;ngen.exeuninstall "C:\Program Files\IQ Technology\Going11\Go11Util.dll"&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;code&gt;Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;   Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
    Copyright (c) Microsoft Corporation.  All rights reserved.
-   Uninstalling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll&lt;/code&gt;&lt;/p&gt;
+   Uninstalling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll
+&lt;/pre&gt;
+
+
 &lt;ol&gt;
 &lt;li&gt;C:\Windows\Microsoft.NET\Framework\v2.0.50727&amp;gt;&lt;code&gt;ngenexecuteQueuedItems&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;code&gt;Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;   Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
    Copyright (c) Microsoft Corporation.  All rights reserved.
-   All compilation targets are up to date.&lt;/code&gt;
-   Go11Util.dll 已經從編譯佇列移除&lt;/p&gt;
-&lt;p&gt;打完收工&lt;/p&gt;&lt;/div&gt;</description><category>.NET</category><category>自然輸入法</category><guid>https://pwchi.github.io/posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/</guid><pubDate>Thu, 29 Jun 2017 06:00:00 GMT</pubDate></item><item><title>不同 Hexo render 顯示 markdown table 的比較</title><link>https://pwchi.github.io/posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/</link><dc:creator>Po-Wen Chi</dc:creator><description>&lt;div&gt;&lt;h3&gt;原始 markdown 表格 code 如下&lt;/h3&gt;
+   All compilation targets are up to date.
+&lt;/pre&gt;
+
+
+&lt;p&gt;Go11Util.dll 已經從編譯佇列移除&lt;/p&gt;&lt;/div&gt;</description><category>.NET</category><category>自然輸入法</category><guid>https://pwchi.github.io/posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/</guid><pubDate>Thu, 29 Jun 2017 06:00:00 GMT</pubDate></item><item><title>不同 Hexo render 顯示 markdown table 的比較</title><link>https://pwchi.github.io/posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/</link><dc:creator>Po-Wen Chi</dc:creator><description>&lt;div&gt;&lt;h3&gt;原始 markdown 表格 code 如下&lt;/h3&gt;
 &lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="nv"&gt;Right&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="nv"&gt;Left&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="nv"&gt;Default&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="nv"&gt;Center&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt;
 &lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="s s-Atom"&gt;------:&lt;/span&gt;&lt;span class="p"&gt;|:-&lt;/span&gt;&lt;span class="s s-Atom"&gt;----&lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="s s-Atom"&gt;---------&lt;/span&gt;&lt;span class="p"&gt;|:-&lt;/span&gt;&lt;span class="s s-Atom"&gt;-----:&lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
 &lt;span class="p"&gt;|&lt;/span&gt;   &lt;span class="mi"&gt;12&lt;/span&gt;  &lt;span class="p"&gt;|&lt;/span&gt;  &lt;span class="mi"&gt;12&lt;/span&gt;  &lt;span class="p"&gt;|&lt;/span&gt;    &lt;span class="mi"&gt;12&lt;/span&gt;   &lt;span class="p"&gt;|&lt;/span&gt;    &lt;span class="mi"&gt;12&lt;/span&gt;  &lt;span class="p"&gt;|&lt;/span&gt;

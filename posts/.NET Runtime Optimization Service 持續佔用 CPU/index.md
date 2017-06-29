@@ -41,18 +41,16 @@
 
 3. C:\Windows\Microsoft.NET\Framework\v2.0.50727>`ngen executeQueuedItems`
 
-   ```
+```
    Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
    Copyright (c) Microsoft Corporation.  All rights reserved.
        Compiling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll (CLR v2.0.50727) ... 
-   ```
-
+```
    發現卡在`C:\ProgramFiles\IQ Technology\Going11\Go11Util.dll`跑不完，只要把 Go11Util.dll 從編譯佇列移除，問題就解決。
 
 # 解決方法
 
 **把 Go11Util.dll 從預編譯佇列移除**
-
 
 1.  以系統管理員身份啟動 CMD
 
@@ -60,19 +58,17 @@
 
 3. C:\Windows\Microsoft.NET\Framework\v2.0.50727>`ngen.exeuninstall "C:\Program Files\IQ Technology\Going11\Go11Util.dll"`
 
-   ```
+```
    Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
    Copyright (c) Microsoft Corporation.  All rights reserved.
    Uninstalling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll
-   ```
+```
 
 4. C:\Windows\Microsoft.NET\Framework\v2.0.50727>`ngenexecuteQueuedItems`
 
-   ```
+```
    Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
    Copyright (c) Microsoft Corporation.  All rights reserved.
    All compilation targets are up to date.
-   ```
+```
    Go11Util.dll 已經從編譯佇列移除
-
-打完收工
