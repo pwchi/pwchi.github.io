@@ -12,7 +12,7 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="https://pwchi.github.io/">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">略過主內容</a>
@@ -67,10 +67,81 @@
             
 
     
+
+
+    
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" class="u-url">不同 Hexo render 顯示 markdown table 的比較</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/" class="u-url">.NET Runtime Optimization Service 持續佔用 CPU</a></h1>
         <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Po-Wen Chi
+            </span></p>
+            <p class="dateline"><a href="posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/" rel="bookmark"><time class="published dt-published" datetime="2017-06-29T14:00:00+08:00" title="2017-06-29 14:00">2017-06-29 14:00</time></a></p>
+                <p class="commentline">
+        
+    <a href="posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/#disqus_thread" data-disqus-identifier="cache/posts/2017-06-29-.NET-Runtime-Optimization-Service-持續佔用-CPU.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="p-summary entry-summary">
+    <div>
+<p>電腦安裝自然輸入法後，當電腦 Idle 一陣子，會發現CPU風扇轉速變高噪音變大，於工作管理員會看到 .NET Runtime Optimization Service 程序持續佔用 CPU。</p>
+<p><img alt="" src="2017-06-29-.NET-Runtime-Optimization-Service-%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8-CPU/taskmanager.png" title="Windows工作管理員"></p>
+<p>正常情況下 .NET RuntimeOptimization Service 會利用電腦空閒時間，將新安裝的 .NET 應用程式進行預編譯，來加快應用程式的啟動速度。通常預編譯只需執行一次，預編譯過的應用程式就不會再執行。<a href="https://blogs.msdn.microsoft.com/dotnet/2013/08/06/got-a-need-for-speed-net-apps-start-faster/" title="Got a need for speed? .NET apps start faster.">1</a></p>
+<p>但問題出在，自然輸入法的預編譯過程一直無法完成，使得 .NET RuntimeOptimization Service 卡在那邊吃 CPU。</p>
+<p>年初就有人在官方FB提出類似問題，但遲遲沒有人出來回應。<a href="https://www.facebook.com/IQGoing/posts/1508997545800403?comment_id=1572744919425665&amp;amp;amp;reply_comment_id=1617858151581008&amp;amp;amp;notif_t=feed_comment_reply&amp;amp;amp;notif_id=1498703585774745" title="自然輸入法官方FB">2</a></p>
+<p>官方網站的常見問題也沒有關於這方面的相關資訊。</p>
+<p>特別把這問題 email 詢問官方後，才收到會在之後版本修正的回覆，但也沒有提供任何 workaround。</p>
+<p>不得不說，對網際智慧這種趨近射後不理的產品支援方式感到擔憂。</p>
+<p>所以整理以下方法給大家自力救濟</p>
+<h2>驗證方法</h2>
+<p><strong>檢查目前 .NET Runtime Optimization Service 的預編譯是卡在什麼地方。</strong> </p>
+<ol>
+<li>
+<p>以系統管理員身份啟動 CMD</p>
+</li>
+<li>
+<p><code>cd C:\Windows\Microsoft.NET\Framework\v2.0.50727\</code></p>
+</li>
+<li>
+<p>C:\Windows\Microsoft.NET\Framework\v2.0.50727&gt;<code>ngen executeQueuedItems</code></p>
+</li>
+</ol>
+<p><code>Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
+   Copyright (c) Microsoft Corporation.  All rights reserved.
+       Compiling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll (CLR v2.0.50727) ...</code></p>
+<p>發現卡在<code>C:\ProgramFiles\IQ Technology\Going11\Go11Util.dll</code>跑不完，只要把 Go11Util.dll 從編譯佇列移除，問題就解決。</p>
+<h2>解決方法</h2>
+<p><strong>把 Go11Util.dll 從預編譯佇列移除</strong></p>
+<ol>
+<li>
+<p>以系統管理員身份啟動 CMD</p>
+</li>
+<li>
+<p><code>cd C:\Windows\Microsoft.NET\Framework\v2.0.50727\</code></p>
+</li>
+<li>
+<p>C:\Windows\Microsoft.NET\Framework\v2.0.50727&gt;<code>ngen.exeuninstall "C:\Program Files\IQ Technology\Going11\Go11Util.dll"</code></p>
+</li>
+</ol>
+<p><code>Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
+   Copyright (c) Microsoft Corporation.  All rights reserved.
+   Uninstalling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll</code></p>
+<ol>
+<li>C:\Windows\Microsoft.NET\Framework\v2.0.50727&gt;<code>ngenexecuteQueuedItems</code>
+</li>
+</ol>
+<p><code>Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
+   Copyright (c) Microsoft Corporation.  All rights reserved.
+   All compilation targets are up to date.</code>
+   Go11Util.dll 已經從編譯佇列移除</p>
+<p>打完收工</p>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" class="u-url">不同 Hexo render 顯示 markdown table 的比較</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Po-Wen Chi
             </span></p>
             <p class="dateline"><a href="posts/%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" rel="bookmark"><time class="published dt-published" datetime="2016-04-29T02:47:23+08:00" title="2016-04-29 02:47">2016-04-29 02:47</time></a></p>
@@ -107,7 +178,7 @@
     </div>
     </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/" class="u-url">Highcharts 與 Plotly 的性能比較</a></h1>
         <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Po-Wen Chi
             </span></p>
             <p class="dateline"><a href="posts/Highcharts%20%E8%88%87%20Plotly%20%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BC%83/" rel="bookmark"><time class="published dt-published" datetime="2016-04-23T10:37:26+08:00" title="2016-04-23 10:37">2016-04-23 10:37</time></a></p>
@@ -172,7 +243,7 @@
     </div>
     </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/%E8%A7%A3%E6%B1%BA%20Windows%20%E7%92%B0%E5%A2%83%20pysnmp%20/%20pycrypto%20package%20%E5%AE%89%E8%A3%9D%E5%A4%B1%E6%95%97%E5%95%8F%E9%A1%8C/" class="u-url">解決 Windows 環境 pysnmp / pycrypto package 安裝失敗問題</a></h1>
         <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Po-Wen Chi
             </span></p>
             <p class="dateline"><a href="posts/%E8%A7%A3%E6%B1%BA%20Windows%20%E7%92%B0%E5%A2%83%20pysnmp%20/%20pycrypto%20package%20%E5%AE%89%E8%A3%9D%E5%A4%B1%E6%95%97%E5%95%8F%E9%A1%8C/" rel="bookmark"><time class="published dt-published" datetime="2015-10-16T16:44:02+08:00" title="2015-10-16 16:44">2015-10-16 16:44</time></a></p>
@@ -207,7 +278,7 @@
     </div>
     </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/%E4%BD%BF%E7%94%A8%20vSphere%20Web%20Client%20%E5%9F%B7%E8%A1%8C%20Launch%20Console%20%E6%99%82%E6%8F%90%E7%A4%BA%20%27The%20server%20name%20could%20not%20be%20resolved%27/" class="u-url">使用 vSphere Web Client 執行 Launch Console 時提示 'The server name could not be resolved'</a></h1>
         <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Po-Wen Chi
             </span></p>
             <p class="dateline"><a href="posts/%E4%BD%BF%E7%94%A8%20vSphere%20Web%20Client%20%E5%9F%B7%E8%A1%8C%20Launch%20Console%20%E6%99%82%E6%8F%90%E7%A4%BA%20%27The%20server%20name%20could%20not%20be%20resolved%27/" rel="bookmark"><time class="published dt-published" datetime="2015-06-12T16:43:12+08:00" title="2015-06-12 16:43">2015-06-12 16:43</time></a></p>
@@ -239,7 +310,7 @@
     </div>
     </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/%E6%8F%90%E4%BE%9B%E5%85%8D%E8%B2%BB%20WHOIS%20Privacy%20%E7%9A%84%E5%9F%9F%E5%90%8D%E4%BE%9B%E6%87%89%E5%95%86%20Namesilo/" class="u-url">提供免費 WHOIS Privacy 的域名供應商 Namesilo</a></h1>
         <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Po-Wen Chi
             </span></p>
             <p class="dateline"><a href="posts/%E6%8F%90%E4%BE%9B%E5%85%8D%E8%B2%BB%20WHOIS%20Privacy%20%E7%9A%84%E5%9F%9F%E5%90%8D%E4%BE%9B%E6%87%89%E5%95%86%20Namesilo/" rel="bookmark"><time class="published dt-published" datetime="2015-06-08T06:43:43+08:00" title="2015-06-08 06:43">2015-06-08 06:43</time></a></p>

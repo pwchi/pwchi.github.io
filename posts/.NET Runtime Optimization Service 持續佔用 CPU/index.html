@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="zh_tw">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>.NET Runtime Optimization Service 持續佔用 CPU | pwchi's BLOG</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://pwchi.github.io/posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Po-Wen Chi">
+<link rel="prev" href="../%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" title="不同 Hexo render 顯示 markdown table 的比較" type="text/html">
+<meta property="og:site_name" content="pwchi's BLOG">
+<meta property="og:title" content=".NET Runtime Optimization Service 持續佔用 CPU">
+<meta property="og:url" content="https://pwchi.github.io/posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/">
+<meta property="og:description" content="電腦安裝自然輸入法後，當電腦 Idle 一陣子，會發現CPU風扇轉速變高噪音變大，於工作管理員會看到 .NET Runtime Optimization Service 程序持續佔用 CPU。
+
+正常情況下 .NET RuntimeOptimization Service 會利用電腦空閒時間，將新安裝的 .NET 應用程式進行預編譯，來加快應用程式的啟動速度。通常預編譯只需執行一次，預編譯過的應用">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-06-29T14:00:00+08:00">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="自然輸入法">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">略過主內容</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">切換導航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://pwchi.github.io/">
+
+                <span id="blog-title">pwchi's BLOG</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../archive.html">Archives</a>
+                </li>
+<li>
+<a href="../../categories/index.html">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- DuckDuckGo custom search --><form method="get" id="search" action="https://duckduckgo.com/" class="navbar-form pull-left">
+<input type="hidden" name="sites" value="https://pwchi.github.io/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top: 4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="../.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/index.md" id="sourcelink">原始碼</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="../.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/" class="u-url">.NET Runtime Optimization Service 持續佔用 CPU</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Po-Wen Chi
+            </span></p>
+            <p class="dateline"><a href="../.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/" rel="bookmark"><time class="published dt-published" datetime="2017-06-29T14:00:00+08:00" itemprop="datePublished" title="2017-06-29 14:00">2017-06-29 14:00</time></a></p>
+                <p class="commentline">
+        
+    <a href="../.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/#disqus_thread" data-disqus-identifier="cache/posts/2017-06-29-.NET-Runtime-Optimization-Service-持續佔用-CPU.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="../.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/index.md" class="sourcelink">原始碼</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>電腦安裝自然輸入法後，當電腦 Idle 一陣子，會發現CPU風扇轉速變高噪音變大，於工作管理員會看到 .NET Runtime Optimization Service 程序持續佔用 CPU。</p>
+<p><img alt="" src="../../2017-06-29-.NET-Runtime-Optimization-Service-%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8-CPU/taskmanager.png" title="Windows工作管理員"></p>
+<p>正常情況下 .NET RuntimeOptimization Service 會利用電腦空閒時間，將新安裝的 .NET 應用程式進行預編譯，來加快應用程式的啟動速度。通常預編譯只需執行一次，預編譯過的應用程式就不會再執行。<a href="https://blogs.msdn.microsoft.com/dotnet/2013/08/06/got-a-need-for-speed-net-apps-start-faster/" title="Got a need for speed? .NET apps start faster.">1</a></p>
+<p>但問題出在，自然輸入法的預編譯過程一直無法完成，使得 .NET RuntimeOptimization Service 卡在那邊吃 CPU。</p>
+<p>年初就有人在官方FB提出類似問題，但遲遲沒有人出來回應。<a href="https://www.facebook.com/IQGoing/posts/1508997545800403?comment_id=1572744919425665&amp;amp;amp;reply_comment_id=1617858151581008&amp;amp;amp;notif_t=feed_comment_reply&amp;amp;amp;notif_id=1498703585774745" title="自然輸入法官方FB">2</a></p>
+<p>官方網站的常見問題也沒有關於這方面的相關資訊。</p>
+<p>特別把這問題 email 詢問官方後，才收到會在之後版本修正的回覆，但也沒有提供任何 workaround。</p>
+<p>不得不說，對網際智慧這種趨近射後不理的產品支援方式感到擔憂。</p>
+<p>所以整理以下方法給大家自力救濟</p>
+<h2>驗證方法</h2>
+<p><strong>檢查目前 .NET Runtime Optimization Service 的預編譯是卡在什麼地方。</strong> </p>
+<ol>
+<li>
+<p>以系統管理員身份啟動 CMD</p>
+</li>
+<li>
+<p><code>cd C:\Windows\Microsoft.NET\Framework\v2.0.50727\</code></p>
+</li>
+<li>
+<p>C:\Windows\Microsoft.NET\Framework\v2.0.50727&gt;<code>ngen executeQueuedItems</code></p>
+</li>
+</ol>
+<p><code>Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
+   Copyright (c) Microsoft Corporation.  All rights reserved.
+       Compiling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll (CLR v2.0.50727) ...</code></p>
+<p>發現卡在<code>C:\ProgramFiles\IQ Technology\Going11\Go11Util.dll</code>跑不完，只要把 Go11Util.dll 從編譯佇列移除，問題就解決。</p>
+<h2>解決方法</h2>
+<p><strong>把 Go11Util.dll 從預編譯佇列移除</strong></p>
+<ol>
+<li>
+<p>以系統管理員身份啟動 CMD</p>
+</li>
+<li>
+<p><code>cd C:\Windows\Microsoft.NET\Framework\v2.0.50727\</code></p>
+</li>
+<li>
+<p>C:\Windows\Microsoft.NET\Framework\v2.0.50727&gt;<code>ngen.exeuninstall "C:\Program Files\IQ Technology\Going11\Go11Util.dll"</code></p>
+</li>
+</ol>
+<p><code>Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
+   Copyright (c) Microsoft Corporation.  All rights reserved.
+   Uninstalling assembly C:\Program Files\IQ Technology\Going11\Go11Util.dll</code></p>
+<ol>
+<li>C:\Windows\Microsoft.NET\Framework\v2.0.50727&gt;<code>ngenexecuteQueuedItems</code>
+</li>
+</ol>
+<p><code>Microsoft (R) CLR Native Image Generator - Version 2.0.50727.8745
+   Copyright (c) Microsoft Corporation.  All rights reserved.
+   All compilation targets are up to date.</code>
+   Go11Util.dll 已經從編譯佇列移除</p>
+<p>打完收工</p>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/net/" rel="tag">.NET</a></li>
+            <li><a class="tag p-category" href="../../categories/zi-ran-shu-ru-fa/" rel="tag">自然輸入法</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../%E4%B8%8D%E5%90%8C%20Hexo%20render%20%E9%A1%AF%E7%A4%BA%20markdown%20table%20%E7%9A%84%E6%AF%94%E8%BC%83/" rel="prev" title="不同 Hexo render 顯示 markdown table 的比較">上一篇</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>迴響</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="pwchisblog",
+            disqus_url="https://pwchi.github.io/posts/.NET%20Runtime%20Optimization%20Service%20%E6%8C%81%E7%BA%8C%E4%BD%94%E7%94%A8%20CPU/",
+        disqus_title=".NET Runtime Optimization Service \u6301\u7e8c\u4f54\u7528 CPU",
+        disqus_identifier="cache/posts/2017-06-29-.NET-Runtime-Optimization-Service-持續佔用-CPU.html",
+        disqus_config = function () {
+            this.language = "zh_tw";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="pwchisblog";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2017         <a href="mailto:pwchi@pwchi.info">Po-Wen Chi</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script src="../../assets/js/colorbox-i18n/jquery.colorbox-zh-TW.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("zh-tw");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2793540-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
